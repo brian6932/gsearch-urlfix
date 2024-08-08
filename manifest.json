@@ -7,7 +7,7 @@
 			"id": "{ae6aec07-b4aa-4e69-a2af-9e02a9df92d1}"
 		}
 	},
-	"description": "Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameter tracking, and fixes browser history mismatch.",
+	"description": "Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameters, fixes browser history mismatch, and strips tracking query parameters.",
 	"content_scripts": [
 		{
 			"matches": [
