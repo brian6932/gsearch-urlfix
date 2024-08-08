@@ -2,23 +2,28 @@
  * Fix JS-free Google Search link mangling.
  */
 
-function fixLinks() {
-    var links = document.links;
-    for (var i = 0; i < links.length; i++) {
-	if (links[i].pathname != "/url" || links[i].search == "") {
-	    continue;
+let i = -1
+const
+	links = document.links,
+	fixLinks = () => {
+		while (++i < links.length) {
+			if (links[i].pathname !== "/url" || links[i].search === "")
+				continue
+			// Extract the search without the leading '?'.
+			const q = new URLSearchParams(links[i].search.slice(1)).get("q")
+			// note to self: must change href attribute, not the entire
+			// thing. Doh. Read the docs, sort of.
+			if (q !== null)
+				links[i].href = decodeURIComponent(q)
+		}
 	}
-	// Extract the search without the leading '?'.
-	let q = links[i].search.slice(1);
-	let qe = new URLSearchParams(q);
-	if (qe.has("q")) {
-	    let dec = decodeURIComponent(qe.get("q"));
-	    // note to self: must change href attribute, not the entire
-	    // thing. Doh. Read the docs, sort of.
-	    links[i].href = dec;
-	}
-    }
-}
 
 // Invoke on load.
-fixLinks();
+fixLinks()
+
+// Reinvoke on body change.
+new MutationObserver(mutations => {
+	for (const mutation of mutations)
+		if (mutation.type === "childList" && mutation.addedNodes[1].id === "main")
+			fixLinks()
+}).observe(document.body, { __proto__: null, childList: true, subtree: true })
