@@ -6,8 +6,8 @@ let i = -1
 const
 	pathToParam = {
 		__proto__: null,
-		url: "q",
-		imgres: "imgurl"
+		"/url": "q",
+		"/imgres": "imgurl"
 	},
 	strippableParams = [
 		"ei",
@@ -25,19 +25,17 @@ const
 			if (links[i].search === "" && links[i].host !== "www.google.com")
 				continue
 
-			const pathname = links[i].pathname.slice(1)
-			switch (pathname) {
-				case "url":
-				case "imgres":
-					// Extract the search without the leading '?'.
-					const param = new URLSearchParams(links[i].search.slice(1)).get(pathToParam[pathname])
-					// note to self: must change href attribute, not the entire
-					// thing. Doh. Read the docs, sort of.
-					if (param === null)
-						continue
+			const mappedParam = pathToParam[links[i].pathname]
+			if (mappedParam !== undefined) {
+				// Extract the search without the leading '?'.
+				const encodedLink = new URLSearchParams(links[i].search.slice(1)).get(mappedParam)
+				// note to self: must change href attribute, not the entire
+				// thing. Doh. Read the docs, sort of.
+				if (encodedLink === null)
+					continue
 
-					if (!(links[i].href = decodeURIComponent(param)).startsWith("https://www.google.com/"))
-						continue
+				if (!(links[i].href = decodeURIComponent(encodedLink)).startsWith("https://www.google.com/"))
+					continue
 			}
 
 			/*
