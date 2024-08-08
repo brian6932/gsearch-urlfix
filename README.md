@@ -1,4 +1,4 @@
-# Google Search URL Fixup
+# Google Search URL Fixup Fork
 
 Google Search URL Fixup is a Firefox WebExtensions addon that undoes the mangling of search result URLs that Google does in circumstances that most people will not run into.
 

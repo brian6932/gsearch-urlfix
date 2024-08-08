@@ -4,6 +4,11 @@
 
 let i = -1
 const
+	pathToParam = {
+		__proto__: null,
+		url: "q",
+		imgres: "imgurl"
+	},
 	strippableParams = [
 		"ei",
 		"fbs",
@@ -20,21 +25,26 @@ const
 			if (links[i].search === "" && links[i].host !== "www.google.com")
 				continue
 
-			switch (links[i].pathname) {
-				case "/url":
+			const pathname = links[i].pathname.slice(1)
+			switch (pathname) {
+				case "url":
+				case "imgres":
 					// Extract the search without the leading '?'.
-					const q = new URLSearchParams(links[i].search.slice(1)).get("q")
+					const param = new URLSearchParams(links[i].search.slice(1)).get(pathToParam[pathname])
 					// note to self: must change href attribute, not the entire
 					// thing. Doh. Read the docs, sort of.
-					if (q !== null)
-						links[i].href = decodeURIComponent(q)
-				case "/":
-				case "/maps":
-				case "/preferences":
-				case "/search":
-				case "/setprefs":
-				case "/travel":
-				case "/webhp":
+					if (param === null)
+						break
+
+					if (!(links[i].href = decodeURIComponent(param)).startsWith("https://www.google.com/"))
+						break
+				case "":
+				case "maps":
+				case "preferences":
+				case "search":
+				case "setprefs":
+				case "travel":
+				case "webhp":
 					const link = new URL(links[i].href)
 
 					for (const param of strippableParams)
