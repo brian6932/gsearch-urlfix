@@ -34,24 +34,28 @@ const
 					// note to self: must change href attribute, not the entire
 					// thing. Doh. Read the docs, sort of.
 					if (param === null)
-						break
+						continue
 
 					if (!(links[i].href = decodeURIComponent(param)).startsWith("https://www.google.com/"))
-						break
-				case "":
-				case "maps":
-				case "preferences":
-				case "search":
-				case "setprefs":
-				case "travel":
-				case "webhp":
-					const link = new URL(links[i].href)
-
-					for (const param of strippableParams)
-						link.searchParams.delete(param)
-
-					links[i].href = link.toString()
+						continue
 			}
+
+			/*
+			 * Should hit the following paths
+				  /
+				  /maps
+				  /preferences
+				  /search
+				  /setprefs
+				  /travel
+				  /webhp
+			 */
+			const link = new URL(links[i].href)
+
+			for (const param of strippableParams)
+				link.searchParams.delete(param)
+
+			links[i].href = link.toString()
 		}
 	}
 

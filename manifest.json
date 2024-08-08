@@ -4,10 +4,10 @@
 	"version": "0.8.4",
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "{80777a71-8b61-4249-a79e-fddf88ef21fc}"
+			"id": "{ae6aec07-b4aa-4e69-a2af-9e02a9df92d1}"
 		}
 	},
-	"description": "Fix links in the JavaScript-free Google Search results to be the original links instead of links indirected through Google with tracking identifiers. Among other benefits, this allows your history to work so you can see if you've already visited a search result.",
+	"description": "Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameter tracking, and fixes browser history mismatch.",
 	"content_scripts": [
 		{
 			"matches": [
