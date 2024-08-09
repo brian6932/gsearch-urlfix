@@ -11,7 +11,7 @@ Google Search has two forms of search pages, one that's normally served to peopl
 
 To be able to swap between the default and GBV mode, you can paste the line below into `My filters` in the uBlock Origin settings. For uMatrix, more details about this in this blog article [Reverse engineering some settings for Google Search](https://utcc.utoronto.ca/~cks/space/blog/web/GoogleSearchSettings).
 ```
-/^https?:\/{2}w{3}\.google\.com\/search\?(?:[^/]+&)?gbv=1(?:$|[&/])/$csp=script-src 'none'
+/^https?:\/{2}w{3}\.google\.(?:a[delmstz]|b[aefgijsty]|c(?:o(?:m(?:\.(?:a[fgru]|b[dhnorz]|c[ouy]|do|e[cgt]|fj|g[hit]|hk|jm|k[hw]|l[by]|m[mtxy]|n[agip]|om|p[aeghkry]|qa|s[abglv]|t[jrw]|u[ay]|v[cn]))?|\.(?:ao|bw|c[kr]|i[dln]|jp|k[er]|ls|m[az]|nz|t[hz]|u[gkz]|v[ei]|z[amw]))|[adfghilmnvz])|d[ejkmz]|e[es]|f[imr]|g[aeglmry]|h[nrtu]|i[emqst]|j[eo]|k[giz]|l[aiktuv]|m[degklnuvw]|n[eloru]|p[lnst]|r[osuw]|s[cehikmnort]|t[dglmnot]|vu|ws)\/search\?(?:[^/]+&)?gbv=1(?:$|[&/])/$csp=script-src 'none'
 ```
 This way you can see both https://www.google.com/search?gbv=1&q=foo and https://www.google.com/search?gbv=2&q=foo side by side.
 
@@ -25,7 +25,7 @@ Since Google wants to track outbound domain traffic, and the Basic Variant mode 
     ```json
     {
     	"name": "Google Basic Variant",
-    	"url": "^https?://www\\.google\\.com/search\\?(?:[^/]+&)?gbv=1(?:$|[&/])",
+    	"url": "^https?://w{3}\\.google\\.(?:a[delmstz]|b[aefgijsty]|c(?:o(?:m(?:\\.(?:a[fgru]|b[dhnorz]|c[ouy]|do|e[cgt]|fj|g[hit]|hk|jm|k[hw]|l[by]|m[mtxy]|n[agip]|om|p[aeghkry]|qa|s[abglv]|t[jrw]|u[ay]|v[cn]))?|\\.(?:ao|bw|c[kr]|i[dln]|jp|k[er]|ls|m[az]|nz|t[hz]|u[gkz]|v[ei]|z[amw]))|[adfghilmnvz])|d[ejkmz]|e[es]|f[imr]|g[aeglmry]|h[nrtu]|i[emqst]|j[eo]|k[giz]|l[aiktuv]|m[degklnuvw]|n[eloru]|p[lnst]|r[osuw]|s[cehikmnort]|t[dglmnot]|vu|ws)/search\\?(?:[^/]+&)?gbv=1(?:$|[&/])",
     	"pageElement": "//div[@id=\"main\"]",
     	"exampleUrl": "https://www.google.com/search?q=foo&gbv=1",
     	"nextLink": "//a[@aria-label=\"Next page\"]"
