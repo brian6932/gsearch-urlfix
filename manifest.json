@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Google Search URL Fixup Fork",
-	"version": "0.8.6",
+	"version": "0.8.7",
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "{ae6aec07-b4aa-4e69-a2af-9e02a9df92d1}"

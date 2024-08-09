@@ -64,5 +64,5 @@ fixLinks()
 new MutationObserver(mutations => {
 	for (const mutation of mutations)
 		if (mutation.type === "childList" && mutation.addedNodes[1].id === "main")
-			fixLinks()
+			return fixLinks()
 }).observe(document.body, { __proto__: null, childList: true, subtree: true })
