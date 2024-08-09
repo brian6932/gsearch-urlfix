@@ -1,17 +1,38 @@
 # Google Search URL Fixup Fork
 
-Google Search URL Fixup is a Firefox WebExtensions addon that undoes the mangling of search result URLs that Google does in circumstances that most people will not run into.
+## AMO & CWS
+[Firefox](https://addons.mozilla.org/firefox/addon/google-search-url-fixup-fork/)
 
-Google Search has two forms of search results pages, one that's normally served to people with JavaScript and one that's served to people who have it turned off, for example through the use of [uMatrix](https://github.com/gorhill/uMatrix); you can read more details about this in my blog article [Reverse engineering some settings for Google Search](https://utcc.utoronto.ca/~cks/space/blog/web/GoogleSearchSettings). I happen to prefer the no-JavaScript version, but this version has the drawback that Google mangles the URLs of search results to be indirected through Google (with tracking identifiers, of course). This addon reverses that mangling, giving you original URLs in the JS-free search results.
+Chromium(Todo, you can sideload with developer mode enabled for now, `web-ext build`)
 
-This addon is now available through AMO as [Google Search URL Fixup](https://addons.mozilla.org/en-US/firefox/addon/google-search-url-fixup/).
+## Explanation
 
-## Known limitations and potential bugs
+Google Search has two forms of search pages, one that's normally served to people with JavaScript, and one that's served to people who have it off, also known as Google Basic Variant (GBV) mode, to enable GBV mode, and not disable JS browser-wide (`javascript.enabled` `false`), you can make domains rules with [uBlock Origin](https://github.com/gorhill/uBlock) or [uMatrix](https://github.com/gorhill/uMatrix).
 
-* It currently only works on www.google.com, www.google.ca, www.google.co.uk, www.google.se, and www.google.de because those are the only Google search domains that I use or that people have requested.
-* The URL-demangling may not work properly for URLs that contain odd characters. Google percent-encodes the URLs and I percent-decode them, but it's possible they need to be partially re-encoded under some circumstances to escape some characters again.
-* There's no icon. I've looked through the [Google Material Design iconset](http://google.github.io/material-design-icons/), which is where Mozilla took their icon for [Your first extension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtension), but nothing jumped out at me as particularly compellingly right.
+To be able to swap between the default and GBV mode, you can paste the line below into `My filters` in the uBlock Origin settings. For uMatrix, more details about this in this blog article [Reverse engineering some settings for Google Search](https://utcc.utoronto.ca/~cks/space/blog/web/GoogleSearchSettings).
+```
+/^https?:\/{2}w{3}\.google\.com\/search\?(?:[^/]+&)?gbv=1(?:$|[&/])/$csp=script-src 'none'
+```
+This way you can see both https://www.google.com/search?gbv=1&q=foo and https://www.google.com/search?gbv=2&q=foo side by side.
 
-## License
+Since Google wants to track outbound domain traffic, and the Basic Variant mode lacks the JavaScript necessary to do more dynamic tracking, Google instead literally URL encodes your destination domain, and sets it as a query parameter on their own domain, which then redirects you to your destination. This Web-Extension aims to solve this, and at the same time strips tracking query parameters on search results on both GBV (gbv=1), and default (gbv=2) Google modes.
 
-Mozilla Public License version 2.0.
+## Fork benefits
+
+1. Reroutes Google's `/imgres` links for inline images.
+1. Strips off query parameter tracking for Google domains throughout the UI.
+1. Listens to body changes to work with inline pagination (e.g. the [Super-preloader](https://github.com/machsix/Super-preloader) UserScript, and the [AutoPagerize](https://github.com/tophf/autopagerize) Web-Extension). You can add the following rule to either (I made this for Super-preloader, but should work with AutoPagerize as long as you set the corresponding properties)
+    ```json
+    {
+    	"name": "Google Basic Variant",
+    	"url": "^https?://www\\.google\\.com/search\\?(?:[^/]+&)?gbv=1(?:$|[&/])",
+    	"pageElement": "//div[@id=\"main\"]",
+    	"exampleUrl": "https://www.google.com/search?q=foo&gbv=1",
+    	"nextLink": "//a[@aria-label=\"Next page\"]"
+    }
+    ```
+
+## Known limitations
+
+* It currently only works on www.google.com, www.google.ca, www.google.co.uk, www.google.se, and www.google.de because those are the only Google search domains that I use, or that people have requested.
+* There's no icon. I've looked through the [Google Material Design iconset](http://google.github.io/material-design-icons/), which is where Mozilla took their icon for [Your first extension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtension), but nothing jumped out at me as particularly compellingly right. I'm open to any PRs to make one.
