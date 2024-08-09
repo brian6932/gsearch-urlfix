@@ -34,5 +34,4 @@ Since Google wants to track outbound domain traffic, and the Basic Variant mode 
 
 ## Known limitations
 
-* It currently only works on www.google.com, www.google.ca, www.google.co.uk, www.google.se, and www.google.de because those are the only Google search domains that I use, or that people have requested.
 * There's no icon. I've looked through the [Google Material Design iconset](http://google.github.io/material-design-icons/), which is where Mozilla took their icon for [Your first extension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtension), but nothing jumped out at me as particularly compellingly right. I'm open to any PRs to make one.
