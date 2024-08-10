@@ -1,9 +1,8 @@
 # Google Search URL Fixup Fork
 
-## AMO & CWS
-[Firefox](https://addons.mozilla.org/firefox/addon/google-search-url-fixup-fork/)
-
-Chromium(Todo, you can sideload with developer mode enabled for now, `web-ext build`)
+- [Firefox (AMO)](https://addons.mozilla.org/firefox/addon/google-search-url-fixup-fork/)
+- Chromium (CWS, todo, you can sideload with developer mode enabled for now, `web-ext build`)
+- [UserScript (Violentmonkey, Greasemonkey, Tampermonkey)](https://raw.githubusercontent.com/brian6932/gsearch-urlfix/master/index.user.js)
 
 ## Explanation
 

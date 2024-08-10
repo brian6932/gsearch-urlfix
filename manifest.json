@@ -200,7 +200,7 @@
 				"*://www.google.cat/search?*"
 			],
 			"js": [
-				"linkfix.js"
+				"index.user.js"
 			]
 		}
 	]
