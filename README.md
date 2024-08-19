@@ -18,7 +18,7 @@ Since Google wants to track outbound domain traffic, and the Basic Variant mode 
 
 ## Fork benefits
 
-1. Reroutes Google's `/imgres` links for inline images.
+1. Reroutes Google's `/imgres` links for inline images (doesn't work that well on `gbv=2`, as it re-applies the `href` encoding with JS).
 1. Strips off query parameter tracking for Google domains throughout the UI.
 1. Listens to body changes to work with inline pagination (e.g. the [Super-preloader](https://github.com/machsix/Super-preloader) UserScript, and the [AutoPagerize](https://github.com/tophf/autopagerize) Web-Extension). You can add the following rule to either (I made this for Super-preloader, but should work with AutoPagerize as long as you set the corresponding properties)
     ```json
