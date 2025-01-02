@@ -31,6 +31,7 @@ Since Google wants to track outbound domain traffic, and the Basic Variant mode 
     }
     ```
 
-## Known limitations
+## Icon attribution
 
-* There's no icon. I've looked through the [Google Material Design iconset](http://google.github.io/material-design-icons/), which is where Mozilla took their icon for [Your first extension](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtension), but nothing jumped out at me as particularly compellingly right. I'm open to any PRs to make one.
+- [noscript](https://thenounproject.com/icon/4954751/) designed by [Edwin P](https://www.fiverr.com/edwinp99).
+- [google](https://thenounproject.com/icon/7274269/) designed by [Gregor Cresnar](https://iconix.si/).

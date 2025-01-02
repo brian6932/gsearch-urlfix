@@ -1,11 +1,18 @@
 {
 	"manifest_version": 3,
 	"name": "Google Search URL Fixup Fork",
-	"version": "0.8.9",
+	"version": "0.8.10",
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "{ae6aec07-b4aa-4e69-a2af-9e02a9df92d1}"
 		}
+	},
+	"icons": {
+		"16": "icon.svg",
+		"32": "icon.svg",
+		"48": "icon.svg",
+		"96": "icon.svg",
+		"128": "icon.svg"
 	},
 	"description": "Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameters, fixes browser history mismatch, and strips tracking query parameters.",
 	"content_scripts": [
