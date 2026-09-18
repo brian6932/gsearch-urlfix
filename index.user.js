@@ -38,9 +38,9 @@ const
 			if (links[i].search === "" && links[i].host !== "www.google.com")
 				continue
 
-			let paramFound = false
 			const mappedParams = pathToParam[links[i].pathname]
 			if (mappedParams !== undefined) {
+				let paramFound = false
 				for (const param of mappedParams) {
 					if (paramFound)
 						break
