@@ -6,7 +6,7 @@
 // @include     /^https?:\/{2}w{3}\.google\.(?:a[delmstz]|b[aefgijsty]|c(?:o(?:m(?:\.(?:a[fgru]|b[dhnorz]|c[ouy]|do|e[cgt]|fj|g[hit]|hk|jm|k[hw]|l[by]|m[mtxy]|n[agip]|om|p[aeghkry]|qa|s[abglv]|t[jrw]|u[ay]|v[cn]))?|\.(?:ao|bw|c[kr]|i[dln]|jp|k[er]|ls|m[az]|nz|t[hz]|u[gkz]|v[ei]|z[amw]))|[adfghilmnvz])|d[ejkmz]|e[es]|f[imr]|g[aeglmry]|h[nrtu]|i[emqst]|j[eo]|k[giz]|l[aiktuv]|m[degklnuvw]|n[eloru]|p[lnst]|r[osuw]|s[cehikmnort]|t[dglmnot]|vu|ws)\/search\?/
 // @icon        https://raw.githubusercontent.com/brian6932/gsearch-urlfix/master/icon.svg
 // @grant       none
-// @version     0.8.10
+// @version     0.8.12
 // @author      brian6932
 // @description Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameters, fixes browser history mismatch, and strips tracking query parameters.
 // @downloadURL https://raw.githubusercontent.com/brian6932/gsearch-urlfix/master/index.user.js
@@ -18,8 +18,8 @@ let i = -1
 const
 	pathToParam = {
 		__proto__: null,
-		"/url": "q",
-		"/imgres": "imgurl"
+		"/url": ["q", "url"],
+		"/imgres": ["imgurl"]
 	},
 	strippableParams = [
 		"ei",
@@ -33,17 +33,30 @@ const
 	],
 	{ links } = globalThis.document,
 	fixLinks = () => {
+		links:
 		while (++i < links.length) {
 			if (links[i].search === "" && links[i].host !== "www.google.com")
 				continue
 
-			const mappedParam = pathToParam[links[i].pathname]
-			if (mappedParam !== undefined) {
-				const encodedLink = new globalThis.URLSearchParams(links[i].search).get(mappedParam)
-				if (encodedLink === null)
-					continue
+			let paramFound = false
+			const mappedParams = pathToParam[links[i].pathname]
+			if (mappedParams !== undefined) {
+				for (const param of mappedParams) {
+					if (paramFound)
+						break
 
-				if (!(links[i].href = globalThis.decodeURIComponent(encodedLink)).startsWith("https://www.google.com/"))
+					const encodedLink = new globalThis.URLSearchParams(links[i].search).get(param)
+
+					if (encodedLink === null)
+						continue
+
+					paramFound = true
+
+					if (!(links[i].href = globalThis.decodeURIComponent(encodedLink)).startsWith("https://www.google.com/"))
+						continue links
+				}
+
+				if (paramFound)
 					continue
 			}
 
