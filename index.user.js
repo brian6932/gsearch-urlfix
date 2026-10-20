@@ -19,6 +19,7 @@ const
 	pathToParam = {
 		__proto__: null,
 		"/url": ["q", "url"],
+		"/goto": ["q", "url"],
 		"/imgres": ["imgurl"]
 	},
 	strippableParams = [
@@ -38,24 +39,30 @@ const
 			if (links[i].search === "" && links[i].host !== "www.google.com")
 				continue
 
+			let paramFound = false
 			const mappedParams = pathToParam[links[i].pathname]
-			if (mappedParams !== undefined) {
-				let paramFound = false
+			if (mappedParams !== undefined)
 				for (const param of mappedParams) {
 					if (paramFound)
 						break
 
-					const encodedLink = new globalThis.URLSearchParams(links[i].search).get(param)
+					let link = new globalThis.URLSearchParams(links[i].search).get(param)
 
-					if (encodedLink === null)
+					if (link === null)
 						continue
+
+					link = globalThis.decodeURIComponent(link)
+
+					if (!link.startsWith("http"))
+						continue
+
+					links[i].href = link
 
 					paramFound = true
 
-					if (!(links[i].href = globalThis.decodeURIComponent(encodedLink)).startsWith("https://www.google.com/"))
+					if (!link.startsWith("https://www.google.com/"))
 						continue links
 				}
-			}
 
 			/*
 			 * Should hit the following paths:
