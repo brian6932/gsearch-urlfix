@@ -6,7 +6,7 @@
 // @include     /^https?:\/{2}w{3}\.google\.(?:a[delmstz]|b[aefgijsty]|c(?:o(?:m(?:\.(?:a[fgru]|b[dhnorz]|c[ouy]|do|e[cgt]|fj|g[hit]|hk|jm|k[hw]|l[by]|m[mtxy]|n[agip]|om|p[aeghkry]|qa|s[abglv]|t[jrw]|u[ay]|v[cn]))?|\.(?:ao|bw|c[kr]|i[dln]|jp|k[er]|ls|m[az]|nz|t[hz]|u[gkz]|v[ei]|z[amw]))|[adfghilmnvz])|d[ejkmz]|e[es]|f[imr]|g[aeglmry]|h[nrtu]|i[emqst]|j[eo]|k[giz]|l[aiktuv]|m[degklnuvw]|n[eloru]|p[lnst]|r[osuw]|s[cehikmnort]|t[dglmnot]|vu|ws)\/search\?/
 // @icon        https://raw.githubusercontent.com/brian6932/gsearch-urlfix/master/icon.svg
 // @grant       none
-// @version     0.8.15
+// @version     0.8.16
 // @author      brian6932
 // @description Sets the links in the JavaScript-free Google Basic Variant (gbv=1) search results to their original domains, which circumvents click routing through Google's query parameters, fixes browser history mismatch, and strips tracking query parameters.
 // @downloadURL https://raw.githubusercontent.com/brian6932/gsearch-urlfix/master/index.user.js
@@ -32,6 +32,9 @@ const
 		"source",
 		"sxsrf",
 		"ved",
+		"opi",
+		"usg",
+		"gsessionid"
 	],
 	{ links } = globalThis.document,
 	fixLinks = () => {
@@ -68,6 +71,8 @@ const
 			/*
 			 * Should hit the following paths:
 				  /
+				  /url
+				  /goto
 				  /maps
 				  /preferences
 				  /search
@@ -76,6 +81,11 @@ const
 				  /webhp
 			 */
 			const link = new globalThis.URL(links[i].href)
+
+			if (link.pathname === "/url") {
+				links[i].href = `https://www.google.com/goto?url=${link.searchParams.get("q") ?? link.searchParams.get("url")}`
+				continue
+			}
 
 			for (const param of strippableParams)
 				link.searchParams.delete(param)
